@@ -8,7 +8,7 @@ import scipy.signal
 import time
 
 ###### settings ##########
-DEBUG_PRINT = 0
+DEBUG_PRINT = 1
 
 plot_mode = 0
 # plot_mode = 0 : raw data -> abs(v-v0) -> ave1, ave2
@@ -19,9 +19,9 @@ plot_mode = 0
 total_plot_num = 4
 plot_count = 1
 
-vol_average_default = 1.65  # 3.3V/2 = 1.65V
+vol_average_default = 0
 
-data_shift = 2  # beggining of 2 rows skip (no data)
+data_shift = 0  # beggining of 2 rows skip (no data)
 
 # LPF parameters
 N=100    # tap num
@@ -159,6 +159,10 @@ if len(f_data) < args.stop_point:
 
 data_length = args.stop_point - args.start_point
 
+if DEBUG_PRINT:
+    print("f_data length =" + str(len(f_data)) + "\n");
+    print("data_length =" + str(data_length) + "\n");    
+
 crop_f_data = [0.0] * (data_length)
 for i in range(data_length):
     crop_f_data[i] = f_data[i + args.start_point]
@@ -233,8 +237,11 @@ if plot_mode == 1:
     subplot_log(x_num, lpf_data, total_plot_num, plot_count, labels, y_min_max)
     plot_count = plot_count + 1
 
-period = csv_data[0][0]
-period = period[7:]
+if 0:
+    period = csv_data[0][0]
+    period = period[7:]
+
+period = 0.000001    
 
 div = float(period) # sec
 
